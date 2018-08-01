@@ -4,7 +4,8 @@ This is an buildroot external (overlay) for building a CMP OS.
 
 # OS Feature
 - Buildroot linux system
-- WiFi
+- WiFi Client & AP
+- Samba File Share
 - Bluetooth
 - Bluetooth A2DP Audio Streaming to Car Headunit
 - Qt5 QML Support
