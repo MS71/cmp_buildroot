@@ -6,10 +6,10 @@ start() {
 	printf "Starting APP: "
 
 	if [ -d /root/ars ]; then
-        	if [ -f /root/ars/start.sh ]; then
-  			chmod +x /root/ars/start.sh
-  			cd /root/ars
-  			/root/ars/start.sh
+        	if [ -f /root/app/start.sh ]; then
+  			chmod +x /root/app/start.sh
+  			cd /root/app
+  			/root/app/start.sh
 		fi
 	fi
 }
@@ -17,10 +17,10 @@ start() {
 stop() {
 	printf "Shutting down APP: "
         if [ -d /root/ars ]; then
-                if [ -f /root/ars/stop.sh ]; then
-                        chmod +x /root/ars/stop.sh
-                        cd /root/ars
-                        /root/ars/stop.sh
+                if [ -f /root/app/stop.sh ]; then
+                        chmod +x /root/app/stop.sh
+                        cd /root/app
+                        /root/app/stop.sh
                 fi
         fi
 }
