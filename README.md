@@ -6,11 +6,12 @@ This is an buildroot external (overlay) for building a CMP OS.
 - Buildroot linux system
 - WiFi Client & AP
 - Samba File Share
-- Bluetooth
+- Bluetooth/BlueZ5
 - Bluetooth A2DP Audio Streaming to Car Headunit
 - Bluetooth AVRCP Control
 - Qt5 QML Support
 - FBTFT Touch Display
+- GStreamer
 
 # Target System
 - Banana PI M2 ZERO (https://bananapi.gitbooks.io/bpi-m2-/content/en/bpi-m2-zero-hardware.html)
