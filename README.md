@@ -8,6 +8,7 @@ This is an buildroot external (overlay) for building a CMP OS.
 - Samba File Share
 - Bluetooth
 - Bluetooth A2DP Audio Streaming to Car Headunit
+- Bluetooth AVRCP Control
 - Qt5 QML Support
 - FBTFT Touch Display
 
