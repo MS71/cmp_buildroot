@@ -4,7 +4,9 @@ This is an buildroot external (overlay) for building a CMP OS.
 
 # Target System
 - Banana PI M2 ZERO (http://www.banana-pi.org/bpi-zero.html)
-[http://www.banana-pi.org/images/bpi-images/ZERO/zero1.jpg]
+![alt text](http://www.banana-pi.org/images/bpi-images/ZERO/zero1.jpg)
+- Watterott RPI Display (https://www.watterott.com/de/RPi-Display-B-Plus)
+![alt text](https://www.watterott.com/media/images/popup/20110952_1.jpg)
 
 # Tree
 ```
