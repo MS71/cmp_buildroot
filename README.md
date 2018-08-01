@@ -15,6 +15,7 @@ This is an buildroot external (overlay) for building a CMP OS.
 
 
 # Tree
+```
 cmp_buildroot/
 ├── external.desc
 ├── external.mk
@@ -53,4 +54,5 @@ cmp_buildroot/
         │   └── smb.conf
         └── ssh
             └── sshd_config
+```
 
