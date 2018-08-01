@@ -8,7 +8,7 @@ This is an buildroot external (overlay) for building a CMP OS.
 - Bluetooth
 - Bluetooth A2DP Audio Streaming to Car Headunit
 - Qt5 QML Support
-- FBTFT Display
+- FBTFT Touch Display
 
 # Target System
 - Banana PI M2 ZERO (http://www.banana-pi.org/bpi-zero.html)
