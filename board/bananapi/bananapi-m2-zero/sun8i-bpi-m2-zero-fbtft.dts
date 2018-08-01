@@ -1,0 +1,208 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (C) 2017 Icenowy Zheng <icenowy@aosc.io>
+ *
+ * Based on sun8i-h3-bananapi-m2-plus.dts, which is:
+ *   Copyright (C) 2016 Chen-Yu Tsai <wens@csie.org>
+ */
+
+/dts-v1/;
+#include "sun8i-h3.dtsi"
+#include "sunxi-common-regulators.dtsi"
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+/ {
+	model = "Banana Pi BPI-M2-Zero";
+	compatible = "sinovoip,bpi-m2-zero", "allwinner,sun8i-h2-plus";
+
+	aliases {
+		serial0 = &uart0;
+		serial1 = &uart1;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+
+		pwr_led {
+			label = "bananapi-m2-zero:red:pwr";
+			gpios = <&r_pio 0 10 GPIO_ACTIVE_HIGH>; /* PL10 */
+			default-state = "on";
+		};
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+
+		sw4 {
+			label = "power";
+			linux,code = <BTN_0>;
+			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
+		};
+	};
+
+	wifi_pwrseq: wifi_pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		pinctrl-names = "default";
+		reset-gpios = <&r_pio 0 7 GPIO_ACTIVE_LOW>; /* PL7 */
+	};
+
+	/* modprobe fbtft_device custom name=rpi-display gpios=reset:15,led:16,dc:68 cs=0 speed=32000000 rotate=180 busnum=0 */
+	/* modprobe ads7846 model=7846 cs=1 gpio_pendown=25 speed=2000000 keep_vref_on=1 x_plate_ohms=60 pressure_max=255 x_min=200 x_max=3900 y_min=200 y_max=3900 */
+	/* modprobe ads7846 gpio_pendown=25 speed=2000000 keep_vref_on=1 x_plate_ohms=60 pressure_max=255 x_min=200 x_max=3900 y_min=200 y_max=3900 */
+
+        fbtft_rst: fbtft_rst {
+                pins = "PA15";
+                function = "gpio_out";
+        };
+
+        fbtft_dc: fbtft_dc {
+                pins = "PC4";
+                function = "gpio_out";
+        };
+
+        fbtft_led: fbtft_led {
+                pins = "PA16";
+                function = "gpio_out";
+        };
+
+	rpi-display@0 {
+		compatible = "fb_ili9341";
+		reg = <0>;
+		status = "okay";
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&fbtft_rst &fbtft_dc &fbtft_led>;
+
+		spi-max-frequency = <32000000>;
+		rotate = <180>;
+		bgr = <0>;
+		fps = <30>;
+		buswidth = <8>;
+		backlight = <0>;
+		readwrite = <1>;
+		reset-gpios = <&pio 0 15 0>;	/* PA15, pio out */
+		dc-gpios = <&pio 2 4 0>;	/* PC4, pio out */
+		led-gpios = <&pio 0 16 0>;	/* PA16, pio out */
+		debug = <0>;
+	};
+
+        ads7846_pins: ads7846_pins {
+                pins= "PA2";
+                function = "irq";
+        };
+
+	ads7846@0 {
+                compatible = "ti,ads7846";
+                reg = <1>; /* Chip Select 1 */
+        	status = "okay";
+
+                pinctrl-names = "default";
+                pinctrl-0 = <&ads7846_pins>;
+                spi-max-frequency = <200000>;
+                interrupt-parent = <&pio>;
+                interrupts = <0 2 2>; /* PA2 IRQ_TYPE_EDGE_FALLING */
+                pendown-gpio = <&pio 0 2 0>; /* PA2 */
+
+                /* driver defaults, optional */
+                ti,x-min = /bits/ 16 <200>;
+                ti,x-max = /bits/ 16 <3900>;
+                ti,y-min = /bits/ 16 <200>;
+                ti,y-max = /bits/ 16 <3900>;
+                ti,swap-xy = <0>;
+                ti,pressure-min = /bits/ 16 <0>;
+                ti,pressure-max = /bits/ 16 <255>;
+                ti,x-plate-ohms = /bits/ 16 <60>;
+                ti,debounce_max = /bits/ 16 <15000>;
+                ti,debounce_tol = /bits/ 16 <65535>;
+                ti,debounce_rep = /bits/ 16 <100>;
+                ti,vref-delay-usecs = /bits/ 16 <450>;
+                ti,keep_vref_on =  <1>;
+                ti,settle_delay_usecs = /bits/ 16 <100>;
+                ti,penirq-recheck-delay-usecs = /bits/ 16 <100>;
+        };
+};
+
+&ehci0 {
+	status = "okay";
+};
+
+&mmc0 {
+	vmmc-supply = <&reg_vcc3v3>;
+	bus-width = <4>;
+	/*
+	 * On the production batch of this board the card detect GPIO is
+	 * high active (card inserted), although on the early samples it's
+	 * low active.
+	 */
+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>; /* PF6 */
+	status = "okay";
+};
+
+&mmc1 {
+	vmmc-supply = <&reg_vcc3v3>;
+	vqmmc-supply = <&reg_vcc3v3>;
+	mmc-pwrseq = <&wifi_pwrseq>;
+	bus-width = <4>;
+	non-removable;
+	status = "okay";
+
+	brcmf: wifi@1 {
+		reg = <1>;
+		compatible = "brcm,bcm4329-fmac";
+		interrupt-parent = <&pio>;
+		interrupts = <6 10 IRQ_TYPE_LEVEL_LOW>; /* PG10 / EINT10 */
+		interrupt-names = "host-wake";
+	};
+};
+
+&ohci0 {
+	status = "okay";
+};
+
+&spi0 {
+	status = "okay";
+	__overlay__ {
+		spi0_cs1: spi0_cs1 {
+			pins = "PC7";
+			function = "gpio_out";
+			output-high;
+		};
+	};
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_pins_a>;
+	status = "okay";
+};
+
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
+	status = "okay";
+};
+
+&usb_otg {
+	dr_mode = "otg";
+	status = "okay";
+};
+
+&usbphy {
+	usb0_id_det-gpios = <&r_pio 0 6 GPIO_ACTIVE_HIGH>; /* PL6 */
+	/*
+	 * There're two micro-USB connectors, one is power-only and another is
+	 * OTG. The Vbus of these two connectors are connected together, so
+	 * the external USB device will be powered just by the power input
+	 * from the power-only USB port.
+	 */
+	status = "okay";
+};
+

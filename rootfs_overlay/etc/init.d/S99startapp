@@ -1,0 +1,45 @@
+#!/bin/sh
+
+[ -d /root/ars ] || exit 0
+
+start() {
+	printf "Starting APP: "
+
+	if [ -d /root/ars ]; then
+        	if [ -f /root/ars/start.sh ]; then
+  			chmod +x /root/ars/start.sh
+  			cd /root/ars
+  			/root/ars/start.sh
+		fi
+	fi
+}
+
+stop() {
+	printf "Shutting down APP: "
+        if [ -d /root/ars ]; then
+                if [ -f /root/ars/stop.sh ]; then
+                        chmod +x /root/ars/stop.sh
+                        cd /root/ars
+                        /root/ars/stop.sh
+                fi
+        fi
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  *)
+	echo "Usage: $0 {start|stop}"
+	exit 1
+esac
+
+exit $?
