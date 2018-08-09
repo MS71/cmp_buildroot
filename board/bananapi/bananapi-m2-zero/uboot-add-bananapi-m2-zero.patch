@@ -2,14 +2,8 @@ diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
 index 6ea9805..6826001 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -320,6 +320,7 @@ dtb-$(CONFIG_MACH_SUN8I_A83T) += \
- 	sun8i-a83t-bananapi-m3.dtb \
- 	sun8i-a83t-cubietruck-plus.dtb
  dtb-$(CONFIG_MACH_SUN8I_H3) += \
 +	sun8i-h2-plus-bananapi-m2-zero.dtb \
- 	sun8i-h2-plus-orangepi-zero.dtb \
- 	sun8i-h2-plus-nanopi-duo.dtb \
- 	sun8i-h2-plus-sunvell-r69.dtb \
 diff --git a/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts b/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts
 new file mode 100644
 index 0000000..61de91d

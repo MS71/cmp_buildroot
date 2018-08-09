@@ -1,26 +1,26 @@
 #!/bin/sh
 
-[ -d /root/ars ] || exit 0
+[ -d /root/app ] || exit 0
 
 start() {
 	printf "Starting APP: "
 
-	if [ -d /root/ars ]; then
-        	if [ -f /root/ars/start.sh ]; then
-  			chmod +x /root/ars/start.sh
-  			cd /root/ars
-  			/root/ars/start.sh
+	if [ -d /root/app ]; then
+        	if [ -f /root/app/start.sh ]; then
+  			chmod +x /root/app/start.sh
+  			cd /root/app
+  			/root/app/start.sh
 		fi
 	fi
 }
 
 stop() {
 	printf "Shutting down APP: "
-        if [ -d /root/ars ]; then
-                if [ -f /root/ars/stop.sh ]; then
-                        chmod +x /root/ars/stop.sh
-                        cd /root/ars
-                        /root/ars/stop.sh
+        if [ -d /root/app ]; then
+                if [ -f /root/app/stop.sh ]; then
+                        chmod +x /root/app/stop.sh
+                        cd /root/app
+                        /root/app/stop.sh
                 fi
         fi
 }
