@@ -2,11 +2,24 @@
 
 This is an buildroot external (overlay) for building a CMP OS.
 
+# OS Feature
+- Buildroot linux system
+- WiFi Client & AP
+- Samba File Share
+- Bluetooth/BlueZ5
+- Bluetooth A2DP Audio Streaming to Car Headunit
+- Bluetooth AVRCP Control
+- Qt5 QML Support
+- FBTFT Touch Display
+- GStreamer
+
 # Target System
-- Banana PI M2 ZERO (http://www.banana-pi.org/bpi-zero.html)
+- Banana PI M2 ZERO (https://bananapi.gitbooks.io/bpi-m2-/content/en/bpi-m2-zero-hardware.html)
 ![alt text](http://www.banana-pi.org/images/bpi-images/ZERO/zero1.jpg)
 - Watterott RPI Display (https://www.watterott.com/de/RPi-Display-B-Plus)
 ![alt text](https://www.watterott.com/media/images/popup/20110952_1.jpg)
+- 5mm Header (https://www.reichelt.de/2x10pol-buchsenleiste-gerade-rm-2-54-bl-2x10g-2-54-p6074.html)
+![alt text](https://cdn-reichelt.de/bilder/web/artikel_ws/C140/BL_2X10G_2_54.jpg)
 
 # Tree
 ```
