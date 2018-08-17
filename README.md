@@ -4,6 +4,7 @@ This is an buildroot external (overlay) for building a CMP OS.
 
 # OS Feature
 - Buildroot linux system
+- Systemd
 - WiFi Client & AP
 - Samba File Share
 - Bluetooth/BlueZ5
