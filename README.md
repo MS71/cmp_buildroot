@@ -74,7 +74,7 @@ cmp_buildroot/
 - cd buildroot
 - export BR2_EXTERNAL=$PWD/../cmp_buildroot
 - make bananapi_m2_zero_cmp_defconfig
-- make
+- time make
 - ... some hours ...
 
 # Target Installation
