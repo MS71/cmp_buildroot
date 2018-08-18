@@ -75,8 +75,15 @@ cmp_buildroot/
 - cd buildroot
 - export BR2_EXTERNAL=$PWD/../cmp_buildroot
 - make bananapi_m2_zero_cmp_defconfig
-- time make
-- ... some hours ...
+- time make<br>
+    ...<br>
+    INFO: hdimage(sdcard.img): adding partition 'u-boot' from 'u-boot-sunxi-with-spl.bin' ...<br>
+    INFO: hdimage(sdcard.img): adding partition 'boot' (in MBR) from 'boot.vfat' ...<br>
+    INFO: hdimage(sdcard.img): adding partition 'rootfs' (in MBR) from 'rootfs.ext4' ...<br>
+    INFO: hdimage(sdcard.img): writing MBR<br>
+    real	119m20,462s<br>
+    user	386m0,202s<br>
+    sys	46m18,693s<br>
 
 # Target Installation
 
