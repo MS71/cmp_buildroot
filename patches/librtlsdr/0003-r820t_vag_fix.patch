@@ -61,14 +61,14 @@ diff -ru librtlsdr-0.5.4.orig/src/tuner_r82xx.c librtlsdr-0.5.4.patched/src/tune
  
 -	return ((data[3] & 0x0f) << 1) + ((data[3] & 0xf0) >> 4);
 +	rf_indicator = ((10*(255-data[2]))/4);
-+
++#if 0
 +	printf("r82xx_read_gain %p rc=%d data[3]=0x%02x/%d rf_indicator=%d regs=(%02x.%02x.%02x.%02x)\n",
 +		priv,
 +		rc,
 +		data[2],data[2],
 +		rf_indicator,
 +		data[0],data[1],data[2],data[3]);
-+
++#endif
 +	return rf_indicator;
  }
  

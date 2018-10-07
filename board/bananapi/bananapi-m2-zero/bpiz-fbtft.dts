@@ -42,6 +42,24 @@
 			linux,code = <BTN_0>;
 			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
 		};
+
+		btn1 {
+			label = "B1";
+			linux,code = <BTN_1>;
+			gpios = <&pio 0 1 GPIO_ACTIVE_LOW>;
+		};
+
+		btn2 {
+			label = "B2";
+			linux,code = <BTN_2>;
+			gpios = <&pio 0 0 GPIO_ACTIVE_LOW>;
+		};
+
+		btn3 {
+			label = "B3";
+			linux,code = <BTN_3>;
+			gpios = <&pio 0 3 GPIO_ACTIVE_LOW>;
+		};
 	};
 
 	wifi_pwrseq: wifi_pwrseq {
@@ -84,6 +102,22 @@
 			function = "gpio_out";
 			output-high;
 		};
+
+		btn1_pins: btn1_pins {
+			pins= "PA1";
+			function = "irq";
+		};
+
+		btn2_pins: btn2_pins {
+			pins= "PA0";
+			function = "irq";
+		};
+
+		btn3_pins: btn3_pins {
+			pins= "PA3";
+			function = "irq";
+		};
+
 	};
 };
 
@@ -91,6 +125,7 @@
 	status = "okay";
 	num-cs = <2>;
 
+	pins = "PC0", "PC1", "PC2", "PC3", "PC7";
 
 		pinctrl-names = "default", "default";
 		//pinctrl-0 = <&spi0_cs0>;
