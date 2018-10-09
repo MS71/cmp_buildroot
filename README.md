@@ -71,9 +71,6 @@ cmp_buildroot/
 - mkdir cmp
 - cd cmp
 - git clone https://github.com/buildroot/buildroot.git
-- Downgrade Qt version to 5.10.1. Because there is a bug in the QML list model.
-  Edit package/qt5/qt5.mk and change QT5_VERSION_MAJOR to 5.10
-  Delete qt5 hashes: find package/qt5 -name '*.hash' -exec rm {} \;
 - git clone https://github.com/MS71/cmp_buildroot.git
 - cd buildroot
 - export BR2_EXTERNAL=$PWD/../cmp_buildroot
