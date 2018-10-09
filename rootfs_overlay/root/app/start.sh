@@ -65,4 +65,4 @@ else
 fi
 
 # start elle-io
-welle-io -plugin tslib:/dev/input/event0
+welle-io -plugin tslib:/dev/input/event0 --log-file /tmp/welle.log --dab-mode 1
