@@ -1,3 +1,4 @@
 menu "CMP packages"
 	source "$BR2_EXTERNAL_CMP_PATH/package/librtlsdr_biastee/Config.in"
+	source "$BR2_EXTERNAL_CMP_PATH/package/welle_io/Config.in"
 endmenu

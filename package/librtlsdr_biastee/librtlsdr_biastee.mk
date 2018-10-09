@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBRTLSDR_BIASTEE_VERSION = master
-LIBRTLSDR_BIASTEE_SITE = $(call github,rtlsdrblog,rtl_biast,$(LIBRTLSDR_BIASTEE_VERSION))
+LIBRTLSDR_BIASTEE_SITE = $(call github,MS71,librtlsdr,$(LIBRTLSDR_BIASTEE_VERSION))
 LIBRTLSDR_BIASTEE_LICENSE = GPL-2.0+
 LIBRTLSDR_BIASTEE_LICENSE_FILES = COPYING
 LIBRTLSDR_BIASTEE_INSTALL_STAGING = YES
