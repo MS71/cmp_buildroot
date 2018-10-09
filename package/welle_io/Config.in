@@ -1,0 +1,9 @@
+config BR2_PACKAGE_WELLE_IO
+	bool "welle-io"
+	depends on BR2_TOOLCHAIN_HAS_THREADS BR2_PACKAGE_FAAD2 
+	help
+	  welle-io DAB receiver for RTL2832U SDR dongles.
+	  https://github.com/AlbrechtL/welle.io
+
+comment "librtlsdr needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
