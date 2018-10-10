@@ -1,3 +1,8 @@
+defaults.bluealsa.interface "hci0"
+defaults.bluealsa.device "B8:D5:0B:C4:80:C7"
+defaults.bluealsa.profile "a2dp"
+defaults.bluealsa.delay 10000
+
 pcm.!default {                                                                                                                         
         type hw                                                                                                                        
         card 0                                                                                                                         
