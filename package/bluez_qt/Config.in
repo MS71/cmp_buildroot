@@ -1,0 +1,9 @@
+config BR2_PACKAGE_BLUEZ_QT
+	bool "bluez_qt"
+	depends on BR2_TOOLCHAIN_HAS_THREADS 
+	depends on BR2_PACKAGE_KF5_EXTRA_CMAKE_MODULES
+	help
+	  bluez-qt
+
+comment "bluez-qt"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
