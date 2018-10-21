@@ -1,5 +1,6 @@
 #!/bin/sh
-ifconfig eth0 172.17.0.1
+#ifconfig eth0 172.17.0.1
+ifconfig eth0 192.168.1.100
 #echo 1 > /sys/class/backlight/fb_ili9341/bl_power
 
 echo userspace > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
@@ -41,6 +42,19 @@ sync
 mount /tmp/app -o remount,rw
 sync
 
+# enable BT6212 ...
+devmem2 0x1f00060 b 1
+echo 204 > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio204/direction
+echo 0 > /sys/class/gpio/gpio204/value
+echo 1 > /sys/class/gpio/gpio204/value
+sleep 0.1
+/usr/bin/hciattach /dev/ttyS1 bcm43xx 1500000 flow bdaddr 43:29:B1:55:01:01
+hciconfig hci0 sspmode 0
+hciconfig hci0 up
+#echo -e 'power on\nagent on\ndiscoverable on\npair B8:D5:0B:C4:80:C7\nconnect B8:D5:0B:C4:80:C7\t \nquit' | bluetoothctl
+echo -e 'power on\nagent on\ndiscoverable on\npairable on\nagent NoInputNoOutput\ndefault-agent\nquit' | bluetoothctl
+
 # enable rtlsdr bias tee
 rtl_biast -d 0 -b 1
 rtl_biast -d 1 -b 1
@@ -65,4 +79,5 @@ else
 fi
 
 # start elle-io
-welle-io -plugin tslib:/dev/input/event0 --log-file /tmp/welle.log --dab-mode 1
+#gst-launch-1.0 audiotestsrc ! autoaudiosink
+welle-io -plugin tslib:/dev/input/event0 --log-file /tmp/welle.log --dab-mode 1 &

@@ -37,6 +37,11 @@
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
 
+      		//pinctrl-0 = <&pinctrl_gpiokeys>;      
+	        //address-cells = <1>;
+      		//size-cells = <0>;
+      		autorepeat;
+
 		sw4 {
 			label = "power";
 			linux,code = <BTN_0>;
@@ -106,16 +111,19 @@
 		btn1_pins: btn1_pins {
 			pins= "PA1";
 			function = "irq";
+			bias-pull-up;
 		};
 
 		btn2_pins: btn2_pins {
 			pins= "PA0";
 			function = "irq";
+			bias-pull-up;
 		};
 
 		btn3_pins: btn3_pins {
 			pins= "PA3";
 			function = "irq";
+			bias-pull-up;
 		};
 
 	};
