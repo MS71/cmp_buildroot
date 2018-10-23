@@ -52,8 +52,9 @@ sleep 0.1
 /usr/bin/hciattach /dev/ttyS1 bcm43xx 1500000 flow bdaddr 43:29:B1:55:01:01
 hciconfig hci0 sspmode 0
 hciconfig hci0 up
+bt-agent -c NoInputNoOutput -p /etc/bluetooth/pins.cfg -d
 #echo -e 'power on\nagent on\ndiscoverable on\npair B8:D5:0B:C4:80:C7\nconnect B8:D5:0B:C4:80:C7\t \nquit' | bluetoothctl
-echo -e 'power on\nagent on\ndiscoverable on\npairable on\nagent NoInputNoOutput\ndefault-agent\nquit' | bluetoothctl
+#echo -e 'power on\nagent on\ndiscoverable on\npairable on\nagent NoInputNoOutput\ndefault-agent\nquit' | bluetoothctl
 
 # enable rtlsdr bias tee
 rtl_biast -d 0 -b 1
