@@ -1,7 +1,8 @@
 config BR2_PACKAGE_WELLE_IO
 	bool "welle-io"
 	depends on BR2_TOOLCHAIN_HAS_THREADS 
-	depends on BR2_PACKAGE_FAAD2 
+	depends on BR2_PACKAGE_FAAD2
+	depends on BR2_PACKAGE_MPG123
 	help
 	  welle-io DAB receiver for RTL2832U SDR dongles.
 	  https://github.com/AlbrechtL/welle.io
