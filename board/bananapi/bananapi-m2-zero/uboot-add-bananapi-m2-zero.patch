@@ -1,58 +1,13 @@
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 6ea9805..6826001 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
- dtb-$(CONFIG_MACH_SUN8I_H3) += \
-+	sun8i-h2-plus-bananapi-m2-zero.dtb \
-diff --git a/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts b/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts
-new file mode 100644
-index 0000000..61de91d
---- /dev/null
-+++ b/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts
-@@ -0,0 +1,141 @@
+diff -Naru u-boot-2018.09/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts u-boot-2018.09.new/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts
+--- u-boot-2018.09/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2018.09.new/arch/arm/dts/sun8i-h2-plus-bananapi-m2-zero.dts	2018-11-11 18:25:42.351976026 +0100
+@@ -0,0 +1,121 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (C) 2017 Icenowy Zheng <icenowy@aosc.io>
 + *
 + * Based on sun8i-h3-bananapi-m2-plus.dts, which is:
 + *   Copyright (C) 2016 Chen-Yu Tsai <wens@csie.org>
-+ *
-+ * This file is dual-licensed: you can use it either under the terms
-+ * of the GPL or the X11 license, at your option. Note that this dual
-+ * licensing only applies to this file, and not this project as a
-+ * whole.
-+ *
-+ *  a) This file is free software; you can redistribute it and/or
-+ *     modify it under the terms of the GNU General Public License as
-+ *     published by the Free Software Foundation; either version 2 of the
-+ *     License, or (at your option) any later version.
-+ *
-+ *     This file is distributed in the hope that it will be useful,
-+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *     GNU General Public License for more details.
-+ *
-+ * Or, alternatively,
-+ *
-+ *  b) Permission is hereby granted, free of charge, to any person
-+ *     obtaining a copy of this software and associated documentation
-+ *     files (the "Software"), to deal in the Software without
-+ *     restriction, including without limitation the rights to use,
-+ *     copy, modify, merge, publish, distribute, sublicense, and/or
-+ *     sell copies of the Software, and to permit persons to whom the
-+ *     Software is furnished to do so, subject to the following
-+ *     conditions:
-+ *
-+ *     The above copyright notice and this permission notice shall be
-+ *     included in all copies or substantial portions of the Software.
-+ *
-+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ *     OTHER DEALINGS IN THE SOFTWARE.
 + */
 +
 +/dts-v1/;
@@ -104,6 +59,10 @@ index 0000000..61de91d
 +	};
 +};
 +
++&ehci0 {
++	status = "okay";
++};
++
 +&mmc0 {
 +	vmmc-supply = <&reg_vcc3v3>;
 +	bus-width = <4>;
@@ -117,8 +76,6 @@ index 0000000..61de91d
 +};
 +
 +&mmc1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mmc1_pins_a>;
 +	vmmc-supply = <&reg_vcc3v3>;
 +	vqmmc-supply = <&reg_vcc3v3>;
 +	mmc-pwrseq = <&wifi_pwrseq>;
@@ -135,9 +92,24 @@ index 0000000..61de91d
 +	};
 +};
 +
++&ohci0 {
++	status = "okay";
++};
++
 +&uart0 {
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&uart0_pins_a>;
++	status = "okay";
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
++	status = "okay";
++};
++
++&usb_otg {
++	dr_mode = "otg";
 +	status = "okay";
 +};
 +
@@ -151,11 +123,9 @@ index 0000000..61de91d
 +	 */
 +	status = "okay";
 +};
-diff --git a/configs/Sinovoip_BPI_M2_Zero_defconfig b/configs/Sinovoip_BPI_M2_Zero_defconfig
-new file mode 100644
-index 0000000..6458c60
---- /dev/null
-+++ b/configs/Sinovoip_BPI_M2_Zero_defconfig
+diff -Naru u-boot-2018.09/configs/Sinovoip_BPI_M2_Zero_defconfig u-boot-2018.09.new/configs/Sinovoip_BPI_M2_Zero_defconfig
+--- u-boot-2018.09/configs/Sinovoip_BPI_M2_Zero_defconfig	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2018.09.new/configs/Sinovoip_BPI_M2_Zero_defconfig	2018-11-11 18:24:31.626290038 +0100
 @@ -0,0 +1,18 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_SUNXI=y
