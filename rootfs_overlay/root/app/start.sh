@@ -1,7 +1,9 @@
 #!/bin/sh
-#ifconfig eth0 172.17.0.1
+# start watchdog ...
+watchdog -T 5 /dev/watchdog0
+
+# configure network ...
 ifconfig eth0 192.168.1.100
-#echo 1 > /sys/class/backlight/fb_ili9341/bl_power
 
 echo userspace > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo 648000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
@@ -53,12 +55,13 @@ sleep 0.1
 hciconfig hci0 sspmode 0
 hciconfig hci0 up
 bt-agent -c NoInputNoOutput -p /etc/bluetooth/pins.cfg -d
-#echo -e 'power on\nagent on\ndiscoverable on\npair B8:D5:0B:C4:80:C7\nconnect B8:D5:0B:C4:80:C7\t \nquit' | bluetoothctl
-#echo -e 'power on\nagent on\ndiscoverable on\npairable on\nagent NoInputNoOutput\ndefault-agent\nquit' | bluetoothctl
+echo -e 'power on\nagent on\ndiscoverable on\npairable on\nquit' | bluetoothctl
 
 # enable rtlsdr bias tee
 rtl_biast -d 0 -b 1
 rtl_biast -d 1 -b 1
+
+#gst-launch-1.0 audiotestsrc ! autoaudiosink
 
 cd /root/app
 export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins/platforms
@@ -80,5 +83,4 @@ else
 fi
 
 # start elle-io
-#gst-launch-1.0 audiotestsrc ! autoaudiosink
 welle-io -plugin tslib:/dev/input/event0 --log-file /tmp/welle.log --dab-mode 1 &
