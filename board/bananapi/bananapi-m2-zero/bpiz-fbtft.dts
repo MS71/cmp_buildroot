@@ -82,7 +82,7 @@
 		};
 
 		fbtft_dc: fbtft_dc {
-			pins = "PA8";
+			pins = "PC4";
 			function = "gpio_out";
 		};
 
@@ -149,7 +149,7 @@
 		backlight = <0>;
 		readwrite = <1>;
 		reset-gpios = <&pio 0 15 0>;	/* PA15, pio out */
-		dc-gpios = <&pio 0 8 0>; 	/* PA8, pio out */
+		dc-gpios = <&pio 2 4 0>;	/* PC4, pio out */
 		led-gpios = <&pio 0 16 0>;	/* PA16, pio out */
 		debug = <0>;
 	};
