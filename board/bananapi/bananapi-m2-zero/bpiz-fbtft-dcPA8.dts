@@ -33,34 +33,39 @@
 		};
 	};
 
-	gpio_keys {
-		compatible = "gpio-keys";
-		pinctrl-names = "default";
+			gpio_keys {
+				compatible = "gpio-keys";
+				pinctrl-names = "default";
 
-		sw4 {
-			label = "power";
-			linux,code = <BTN_0>;
-			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
-		};
+		      		pinctrl-0 = <&gpio_button_0>;      
+				//address-cells = <1>;
+		      		//size-cells = <0>;
+		      		//autorepeat;
 
-		btn1 {
-			label = "B1";
-			linux,code = <BTN_1>;
-			gpios = <&pio 0 1 GPIO_ACTIVE_LOW>;
-		};
+				sw4 {
+					label = "power";
+					linux,code = <BTN_0>;
+					gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
+				};
 
-		btn2 {
-			label = "B2";
-			linux,code = <BTN_2>;
-			gpios = <&pio 0 0 GPIO_ACTIVE_LOW>;
-		};
+				btn1 {
+					label = "B1";
+					linux,code = <BTN_1>;
+					gpios = <&pio 0 1 GPIO_ACTIVE_LOW>;
+				};
 
-		btn3 {
-			label = "B3";
-			linux,code = <BTN_3>;
-			gpios = <&pio 0 3 GPIO_ACTIVE_LOW>;
-		};
-	};
+				btn2 {
+					label = "B2";
+					linux,code = <BTN_2>;
+					gpios = <&pio 0 0 GPIO_ACTIVE_LOW>;
+				};
+
+				btn3 {
+					label = "B3";
+					linux,code = <BTN_3>;
+					gpios = <&pio 0 3 GPIO_ACTIVE_LOW>;
+				};
+			};
 
 	wifi_pwrseq: wifi_pwrseq {
 		compatible = "mmc-pwrseq-simple";
@@ -103,19 +108,10 @@
 			output-high;
 		};
 
-		btn1_pins: btn1_pins {
-			pins= "PA1";
+		gpio_button_0: gpio_button_0 {
+			pins= "PA0", "PA1", "PA3";
 			function = "irq";
-		};
-
-		btn2_pins: btn2_pins {
-			pins= "PA0";
-			function = "irq";
-		};
-
-		btn3_pins: btn3_pins {
-			pins= "PA3";
-			function = "irq";
+			bias-pull-up;
 		};
 
 	};
