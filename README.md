@@ -71,6 +71,7 @@ cmp_buildroot/
 - mkdir cmp
 - cd cmp
 - git clone https://github.com/buildroot/buildroot.git
+  (latest succesful build with 6a5e9a7ac6e20f8cb2251b61b09b54d51bedfa82)
 - git clone https://github.com/MS71/cmp_buildroot.git
 - cd buildroot
 - export BR2_EXTERNAL=$PWD/../cmp_buildroot
