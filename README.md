@@ -12,6 +12,7 @@ This is an buildroot external (overlay) for building a CMP OS.
 - Bluetooth AVRCP Control
 - Qt5 QML Support
 - FBTFT Touch Display
+- PulseAudio
 - GStreamer
 
 # Target System
