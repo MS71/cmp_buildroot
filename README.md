@@ -26,7 +26,7 @@ This is an buildroot external (overlay) for building a CMP OS.
 ![alt text](images/System.png)
 
 # My Car
-![alt text](images/mycar.png)
+![alt text](images/mycar.jpg)
 
 # 3D Case
 ![alt text](images/bpiz_01.png)
