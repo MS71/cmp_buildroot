@@ -1,0 +1,110 @@
+diff -ruN welle.io-master.org/src/gui/CGUI.cpp welle.io-master/src/gui/CGUI.cpp
+--- welle.io-master.org/src/gui/CGUI.cpp	2018-12-01 00:38:35.361648551 +0100
++++ welle.io-master/src/gui/CGUI.cpp	2018-12-01 00:42:20.930898835 +0100
+@@ -49,6 +49,9 @@
+ #endif
+     : QObject(parent)
+     , RadioController(RadioController)
++    #ifdef ENABLE_MPRIS
++    , mpris(this)
++    #endif
+     , spectrum_series(NULL)
+ {
+     m_currentGainValue = 0;
+@@ -58,6 +61,16 @@
+     // Add image provider for the MOT slide show
+     MOTImage = new CMOTImageProvider;
+ 
++#ifdef ENABLE_MPRIS
++    printf("init mpris\n");
++    mpris.setCanGoNext(true);
++    mpris.setCanGoNext(true);
++    mpris.setCanControl(true);
++
++    connect(&mpris, SIGNAL(nextRequested()), this, SLOT(mpris_nextRequested()));
++    connect(&mpris, SIGNAL(previousRequested()), this, SLOT(mpris_previousRequested()));
++#endif
++
+ #ifdef Q_OS_ANDROID
+     connect(RadioController, &CRadioControllerReplica::stateChanged, this, &CGUI::stateChanged);
+     connect(RadioController, &CRadioControllerReplica::DeviceClosed, this, &CGUI::DeviceClosed);
+@@ -82,6 +95,18 @@
+     qDebug() << "GUI:" <<  "deleting radioInterface";
+ }
+ 
++#ifdef ENABLE_MPRIS
++void CGUI::mpris_nextRequested()
++{
++    printf("mpris_nextRequested()\n");
++}
++
++void CGUI::mpris_previousRequested()
++{
++    printf("mpris_previousRequested()\n");
++}
++#endif
++
+ void CGUI::close()
+ {
+ #ifdef Q_OS_ANDROID
+diff -ruN welle.io-master.org/src/gui/CGUI.h welle.io-master/src/gui/CGUI.h
+--- welle.io-master.org/src/gui/CGUI.h	2018-12-01 00:38:35.361648551 +0100
++++ welle.io-master/src/gui/CGUI.h	2018-12-01 00:42:23.798970651 +0100
+@@ -37,6 +37,8 @@
+ #include <QtCharts>
+ using namespace QtCharts;
+ 
++#define ENABLE_MPRIS
++
+ #ifdef Q_OS_ANDROID
+ #include "rep_CRadioController_replica.h"
+ #else
+@@ -45,6 +47,10 @@
+ #include "CMOTImageProvider.h"
+ #include "DabConstants.h"
+ 
++#ifdef ENABLE_MPRIS
++#include "MprisQt/mprisplayer.h"
++#endif
++
+ /*
+  *	GThe main gui object. It inherits from
+  *	QDialog and the generated form
+@@ -97,6 +103,10 @@
+     CRadioController *RadioController;
+ #endif
+ 
++#ifdef ENABLE_MPRIS
++    MprisPlayer mpris;
++#endif
++
+     QXYSeries* spectrum_series;
+ 
+     const QVariantMap licenses();
+@@ -131,6 +141,12 @@
+     void guiDataChanged(QVariantMap guiData);
+     void stationModelChanged();
+     void motChanged(void);
++
++#ifdef ENABLE_MPRIS
++    void mpris_nextRequested();
++    void mpris_previousRequested();
++#endif
++
+ };
+ 
+ #endif
+diff -ruN welle.io-master.org/welle.io.pro welle.io-master/welle.io.pro
+--- welle.io-master.org/welle.io.pro	2018-12-01 00:38:35.357648464 +0100
++++ welle.io-master/welle.io.pro	2018-12-01 00:35:25.329508187 +0100
+@@ -3,6 +3,10 @@
+ QT += network qml quick charts multimedia
+ CONFIG += c++14
+ 
++CONFIG += link_pkgconfig
++PKGCONFIG += dbusextended-qt5 mpris-qt5
++DEFINES += ENABLE_MPRIS
++
+ Release: QMAKE_CFLAGS	+=  -flto -ffast-math -O3
+ Release: QMAKE_CXXFLAGS	+=  -flto -ffast-math -O3
+ Release: QMAKE_LFLAGS	+=  -flto -O3

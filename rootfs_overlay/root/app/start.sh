@@ -6,7 +6,7 @@ watchdog -T 5 /dev/watchdog0
 ifconfig eth0 192.168.1.100
 
 echo userspace > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-echo 648000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
+echo 816000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
 
 kill welle-io
 
