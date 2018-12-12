@@ -12,7 +12,9 @@ This is an buildroot external (overlay) for building a CMP OS.
 - Bluetooth AVRCP Control
 - Qt5 QML Support
 - FBTFT Touch Display
+- PulseAudio
 - GStreamer
+- Welle.IO
 
 # Target System
 - Banana PI M2 ZERO (https://bananapi.gitbooks.io/bpi-m2-/content/en/bpi-m2-zero-hardware.html)
