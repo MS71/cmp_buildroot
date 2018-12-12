@@ -233,6 +233,18 @@
 	status = "okay";
 };
 
+&i2c0 {
+	__overlay__ {
+			status = "okay";
+	};
+};
+
+&i2c1 {
+	__overlay__ {
+			status = "okay";
+	};
+};
+
 /*
  * EOF
  */

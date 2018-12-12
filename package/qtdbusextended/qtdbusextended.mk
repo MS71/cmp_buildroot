@@ -23,7 +23,10 @@ endef
 
 define QTDBUSEXTENDED_INSTALL_STAGING_CMDS
         $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install
-#        $(QT5_LA_PRL_FILES_FIXUP)
+endef
+
+define QTDBUSEXTENDED_INSTALL_TARGET_CMDS
+	cp -dpf $(STAGING_DIR)/usr/lib/libdbusextended-qt5.so.* $(TARGET_DIR)/usr/lib
 endef
 
 $(eval $(generic-package))

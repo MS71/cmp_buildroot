@@ -59,35 +59,8 @@ else
  tr -dc A-F0-9 < /dev/urandom | head -c 10 | sed -r 's/(..)/\1:/g;s/:$//;s/^/02:/' > $BTADDR_FILE                                                            
 fi   
 /usr/bin/hciattach /dev/ttyS1 bcm43xx 1500000 flow bdaddr `cat $BTADDR_FILE` 
-hciconfig hci0 sspmode 0
 hciconfig hci0 up
-bt-agent -c NoInputNoOutput -p /etc/bluetooth/pins.cfg -d
-echo -e 'power on\nagent on\ndiscoverable on\npairable on\nquit' | bluetoothctl
+hciconfig hci0 sspmode 0 
 
-# enable rtlsdr bias tee
-rtl_biast -d 0 -b 1
-rtl_biast -d 1 -b 1
+dbus-run-session /root/app/welle.sh &> /tmp/welle.log &
 
-#gst-launch-1.0 audiotestsrc ! autoaudiosink
-
-cd /root/app
-export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins/platforms
-export QT_QPA_PLATFORM=linuxfb:fb=/dev/fb0:size=240x320
-#export QT_QPA_FB_HIDECURSOR=1
-export QT_QPA_GENERIC_PLUGINS=tslib:/dev/input/event0
-export QT_QPA_FB_TSLIB=1
-export TSLIB_FBDEVICE=/dev/fb0
-export TSLIB_TSDEVICE=/dev/input/event0 
-cd /tmp/app
-echo 1 > /sys/class/backlight/fb_ili9341/bl_power
-export TSLIB_CALIBFILE=/tmp/app/tslib.calib
-if [ -f $TSLIB_CALIBFILE ]; then
- echo ""
-else
- ts_calibrate
- sync
- ts_test
-fi
-
-# start elle-io
-welle-io -plugin tslib:/dev/input/event0 --log-file /tmp/welle.log --dab-mode 1 &
