@@ -4,5 +4,4 @@ menu "CMP packages"
 	source "$BR2_EXTERNAL_CMP_PATH/package/bluez_qt/Config.in"
 	source "$BR2_EXTERNAL_CMP_PATH/package/qtdbusextended/Config.in"
 	source "$BR2_EXTERNAL_CMP_PATH/package/qtmpris/Config.in"
-	source "$BR2_EXTERNAL_CMP_PATH/package/ffmpeg4/Config.in"
 endmenu
