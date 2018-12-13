@@ -35,6 +35,6 @@ rtl_biast -d 1 -b 1
 
 echo "start welle-io ..."
 mpris-proxy &
-welle-io -plugin tslib:/dev/input/event0 --disable-splash --dab-mode 1 > /tmp/welle_io.txt
+welle-io -plugin tslib:/dev/input/event0 > /tmp/welle_io.txt
 
 echo "... done"

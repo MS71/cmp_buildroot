@@ -24,6 +24,7 @@ endef
 
 define WELLE_IO_INSTALL_STAGING_CMDS
     $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install
+    cp -dpf $(@D)/src/welle-gui/welle-io $(STAGING_DIR)/usr/bin/welle-io
 endef
 
 define QTDBUSEXTENDED_INSTALL_TARGET_CMDS
