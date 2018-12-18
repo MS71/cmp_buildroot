@@ -27,7 +27,7 @@ define WELLE_IO_INSTALL_STAGING_CMDS
     cp -dpf $(@D)/src/welle-gui/welle-io $(STAGING_DIR)/usr/bin/welle-io
 endef
 
-define QTDBUSEXTENDED_INSTALL_TARGET_CMDS
+define WELLE_IO_INSTALL_TARGET_CMDS
     cp -dpf $(STAGING_DIR)/usr/bin/welle-io $(TARGET_DIR)/usr/bin
 endef
 
