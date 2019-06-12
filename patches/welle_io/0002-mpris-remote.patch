@@ -1,0 +1,179 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 63f1127..beecd3d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -59,6 +59,12 @@ if(ALSA_FOUND)
+     add_definitions(-DHAVE_ALSA)
+ endif()
+ 
++if (MPRIS)
++    add_definitions(-DHAVE_MPRIS)
++    find_package(PkgConfig REQUIRED)
++    pkg_check_modules(MPRIS_PKG REQUIRED mpris-qt5 dbusextended-qt5)
++endif()
++
+ if(KISS_FFT)
+     add_definitions(-DKISSFFT)
+     set(fft_sources src/libs/kiss_fft/kiss_fft.c)
+@@ -104,6 +110,7 @@ include_directories(
+     ${FAAD_INCLUDE_DIRS}
+     ${LIBRTLSDR_INCLUDE_DIRS}
+     ${SoapySDR_INCLUDE_DIRS}
++    ${MPRIS_PKG_INCLUDE_DIRS}
+ )
+ 
+ set(backend_sources
+@@ -218,6 +225,7 @@ if(BUILD_WELLE_IO)
+       ${FAAD_LIBRARIES}
+       ${SoapySDR_LIBRARIES}
+       ${MPG123_LIBRARIES}
++      ${MPRIS_PKG_LIBRARIES}
+       Threads::Threads
+       Qt5::Core Qt5::Widgets Qt5::Multimedia Qt5::Charts Qt5::Qml Qt5::Quick
+     )
+diff --git a/src/backend/dab_decoder.cpp b/src/backend/dab_decoder.cpp
+index fdc82c3..7a4e092 100644
+--- a/src/backend/dab_decoder.cpp
++++ b/src/backend/dab_decoder.cpp
+@@ -163,7 +163,7 @@ size_t MP2Decoder::DecodeFrame(uint8_t **data) {
+ 	ProcessUntouchedStream(header, body_data, body_bytes);
+ 
+ 	size_t frame_len;
+-	mpg_result = mpg123_framebyframe_decode(handle, nullptr, data, &frame_len);
++    mpg_result = mpg123_framebyframe_decode(handle, nullptr, data, &frame_len);
+ 	if(mpg_result != MPG123_OK)
+ 		throw std::runtime_error("MP2Decoder: error while mpg123_framebyframe_decode: " + std::string(mpg123_plain_strerror(mpg_result)));
+ 
+diff --git a/src/welle-gui/radio_controller.cpp b/src/welle-gui/radio_controller.cpp
+index 9396c8f..32e0073 100644
+--- a/src/welle-gui/radio_controller.cpp
++++ b/src/welle-gui/radio_controller.cpp
+@@ -34,6 +34,7 @@
+ #include <QDebug>
+ #include <QSettings>
+ #include <QStandardPaths>
++#include <QVariantMap>
+ #include <stdexcept>
+ 
+ #include "radio_controller.h"
+@@ -78,6 +79,9 @@ CRadioController::CRadioController(QVariantMap& commandLineOptions, QObject *par
+     : QObject(parent)
+     , commandLineOptions(commandLineOptions)
+     , audioBuffer(2 * AUDIOBUFFERSIZE)
++#ifdef HAVE_MPRIS
++    , mpris(this)
++#endif
+     , audio(audioBuffer)
+ {
+     // Init the technical data
+@@ -101,8 +105,51 @@ CRadioController::CRadioController(QVariantMap& commandLineOptions, QObject *par
+     qRegisterMetaType<dab_date_time_t>("dab_date_time_t");
+     connect(this, &CRadioController::dateTimeUpdated,
+             this, &CRadioController::displayDateTime);
++
++#ifdef HAVE_MPRIS
++    connect(&mpris, SIGNAL(nextRequested()),
++            this, SLOT(mpris_nextRequested()));
++    connect(&mpris, SIGNAL(previousRequested()),
++            this, SLOT(mpris_previousRequested()));
++    connect(&mpris, SIGNAL(volumeChanged()),
++            this, SLOT(mpris_volumeChanged()));
++    mpris.setServiceName("Welle-IO");
++    mpris.setIdentity("Welle-IO");
++    mpris.setCanControl(true);
++    mpris.setCanGoNext(true);
++    mpris.setCanGoPrevious(true);    
++
++    mpris.setPlaybackStatus(Mpris::PlaybackStatus::Playing);
++    mpris.setLoopStatus(Mpris::LoopStatus::Track);
++    mpris.setHasTrackList(false);
++
++    QVariantMap m = mpris.metadata();
++    m["Album"] = "My Title";
++    m["Title"] = "My Album";
++    mpris.setMetadata(m);
++#endif
++}
++
++#ifdef HAVE_MPRIS
++#include <QDebug>
++void CRadioController::mpris_nextRequested()
++{
++    printf("mpris_nextRequested()\n");
++    nextChannel(false);
++}
++
++void CRadioController::mpris_previousRequested()
++{
++    printf("mpris_previousRequested()\n");
+ }
+ 
++void CRadioController::mpris_volumeChanged()
++{
++    printf("mpris_volumeChanged() %d\n",mpris.volume());
++}
++
++#endif
++
+ void CRadioController::closeDevice()
+ {
+     qDebug() << "RadioController:" << "Close device";
+@@ -636,6 +683,12 @@ void CRadioController::ensembleId(quint16 eId)
+     auto label = radioReceiver->getEnsembleLabel();
+     currentEnsembleLabel = QString::fromStdString(label.utf8_label());
+ 
++#ifdef HAVE_MPRIS
++    QVariantMap m = mpris.metadata();
++    m["Album"] = currentEnsembleLabel.toStdString().c_str();
++    mpris.setMetadata(m);
++#endif
++
+     emit ensembleChanged();
+ }
+ 
+@@ -676,6 +729,12 @@ void CRadioController::labelTimerTimeout()
+             label = srv.serviceLabel.utf8_label();
+         }
+ 
++#ifdef HAVE_MPRIS
++        QVariantMap m = mpris.metadata();
++        m["Title"] = label.c_str();
++        mpris.setMetadata(m);
++#endif
++
+         if (not label.empty()) {
+             const auto qlabel = QString::fromStdString(label);
+             emit newStationNameReceived(qlabel, sId, currentChannel);
+diff --git a/src/welle-gui/radio_controller.h b/src/welle-gui/radio_controller.h
+index 445958c..9a1b0ff 100644
+--- a/src/welle-gui/radio_controller.h
++++ b/src/welle-gui/radio_controller.h
+@@ -41,6 +41,11 @@
+ #include <mutex>
+ #include <list>
+ 
++#ifdef HAVE_MPRIS
++#include <Mpris>
++#include <MprisPlayer>
++#endif
++
+ #include "audio_output.h"
+ #include "dab-constants.h"
+ #include "radio-receiver.h"
+@@ -212,6 +217,16 @@ private:
+     QString autoChannel;
+     quint32 autoService;
+ 
++#ifdef HAVE_MPRIS
++    MprisPlayer mpris;
++#endif
++
++#ifdef HAVE_MPRIS
++    void mpris_nextRequested();
++    void mpris_previousRequested();
++    void mpris_volumeChanged();
++#endif
++
+ public slots:
+     void setErrorMessage(QString Text);
+     void setErrorMessage(const std::string& head, const std::string& text = "");

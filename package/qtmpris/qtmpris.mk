@@ -32,7 +32,8 @@ define QTMPRIS_INSTALL_TARGET_CMDS
     cp -dpf $(BUILD_DIR)/qtmpris-origin_master/src/libmpris-qt5.so* $(STAGING_DIR)/usr/lib
     cp -dpf $(BUILD_DIR)/qtmpris-origin_master/src/pkgconfig/*.pc $(STAGING_DIR)/usr/lib/pkgconfig/.
     mkdir -p $(STAGING_DIR)/usr/include/qt5/MprisQt
-    cp -dpf $(BUILD_DIR)/qtmpris-origin_master/src/MprisQt $(STAGING_DIR)/usr/include/qt5/MprisQt/Mpris
+    cp -dpf $(BUILD_DIR)/qtmpris-origin_master/src/MprisQt $(STAGING_DIR)/usr/include/qt5/MprisQt/MprisQt
+    cp -dpf $(BUILD_DIR)/qtmpris-origin_master/src/Mpris $(STAGING_DIR)/usr/include/qt5/MprisQt/Mpris
     cp -dpf $(BUILD_DIR)/qtmpris-origin_master/src/MprisPlayer $(STAGING_DIR)/usr/include/qt5/MprisQt/.
     cp -dpf $(BUILD_DIR)/qtmpris-origin_master/src/*.h $(STAGING_DIR)/usr/include/qt5/MprisQt/.
     cp -dpf $(STAGING_DIR)/usr/lib/libmpris-qt5.so* $(TARGET_DIR)/usr/lib
