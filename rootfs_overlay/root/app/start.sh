@@ -62,5 +62,12 @@ fi
 hciconfig hci0 up
 hciconfig hci0 sspmode 0 
 
-dbus-run-session /root/app/welle.sh &> /tmp/welle.log &
+if [ -f /tmp/app/app.img ]; then
+  losetup /dev/loop0 /tmp/app/app.img
+  mkdir /tmp/app.img
+  mount /dev/loop0 /tmp/app.img
+  dbus-run-session /tmp/app.img/session.sh &> /tmp/session.log &
+else
+  dbus-run-session /root/app/welle.sh &> /tmp/welle.log &
+fi
 
