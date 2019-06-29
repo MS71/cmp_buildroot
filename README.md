@@ -80,7 +80,7 @@ cmp_buildroot/
 - cd cmp
 - git clone https://github.com/buildroot/buildroot.git
 - cd buildroot
-- git checkout 2019.02
+- git checkout 2019.05
 - cd ..
 - git clone https://github.com/MS71/cmp_buildroot.git
 - cd buildroot
