@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QTDBUSEXTENDED_VERSION = master
+QTDBUSEXTENDED_VERSION = 34971431233dc408553245001148d34a09836df1
 QTDBUSEXTENDED_SITE = $(call github,nemomobile,qtdbusextended,$(QTDBUSEXTENDED_VERSION))
 QTDBUSEXTENDED_LICENSE = GPL-2.0+
 QTDBUSEXTENDED_LICENSE_FILES = COPYING

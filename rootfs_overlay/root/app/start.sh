@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # start watchdog ...
 watchdog -T 5 /dev/watchdog0
 
@@ -19,30 +19,48 @@ else
  mount /dev/root -o remount,ro 
 fi
 
-# create /tmp/app if not exists ...
-if [ -d /tmp/app ]; then
+# create /tmp/mmcvfat if not exists ...
+if [ -d /tmp/mmcvfat ]; then
  echo ""
 else
- mkdir /tmp/app
+ mkdir /tmp/mmcvfat
 fi
 
-
-if [ -e /dev/sda1 ]; then
- echo ""
-else
- sleep 1
-fi
-
-# mount /dev/sda1 or /dev/mmcblk0p1
-if [ -e /dev/sda1 ]; then
- mount /dev/sda1 /tmp/app
-else
- mount /dev/mmcblk0p1 /tmp/app
-fi
-sleep 1
+mount /dev/mmcblk0p1 /tmp/mmcvfat
 sync
-mount /tmp/app -o remount,rw
+mount /tmp/mmcvfat -o remount,rw
 sync
+
+# check for update from sda1 ...
+if [ -e /tmp/sda1 ]; then
+  umount /tmp/sda1
+else
+  mkdir /tmp/sda1
+fi
+#
+if [ -e /dev/sda1 ]; then
+  mount /dev/sda1 /tmp/sda1
+fi
+#
+if [ -e /tmp/sda1/app.zip ]; then
+  NEWMD5SUM=($(md5sum /tmp/sda1/app.zip))
+  OLDMD5SUM=
+  if [ -f /tmp/mmcvfat/app.md5 ]; then
+    OLDMD5SUM=$(cat /tmp/mmcvfat/app.md5)
+  fi
+  cd /tmp/mmcvfat
+  if [ "0x$OLDMD5SUM" != "0x$NEWMD5SUM" ] ; then
+    echo "updating ..."
+    cd /tmp/mmcvfat
+    unzip -oq /tmp/sda1/app.zip
+    echo $NEWMD5SUM > /tmp/mmcvfat/app.md5
+    sync
+    echo "updating ... done"
+    exit
+  fi
+  tar cvf /tmp/sda1/app_backup.tar app
+  sync
+fi
 
 # enable Bluetooth AP6212 ...
 devmem2 0x1f00060 b 1
@@ -52,7 +70,7 @@ echo 0 > /sys/class/gpio/gpio204/value
 echo 1 > /sys/class/gpio/gpio204/value
 sleep 0.1
 # generate BT MAC
-export BTADDR_FILE=/tmp/app/bt.addr                                      
+export BTADDR_FILE=/tmp/mmcvfat/bt.addr                                      
 if [ -f $BTADDR_FILE ]; then                                               
  echo ""                                                                       
 else                                                                           
@@ -62,11 +80,9 @@ fi
 hciconfig hci0 up
 hciconfig hci0 sspmode 0 
 
-if [ -f /tmp/app/app.img ]; then
-  losetup /dev/loop0 /tmp/app/app.img
-  mkdir /tmp/app.img
-  mount /dev/loop0 /tmp/app.img
-  dbus-run-session /tmp/app.img/session.sh &> /tmp/session.log &
+if [ -f /tmp/mmcvfat/app/start.sh ]; then
+  chmod +x /tmp/mmcvfat/app/start.sh
+  /tmp/mmcvfat/app/start.sh &
 else
   dbus-run-session /root/app/welle.sh &> /tmp/welle.log &
 fi

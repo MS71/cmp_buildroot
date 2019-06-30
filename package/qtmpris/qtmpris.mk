@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QTMPRIS_VERSION = origin/master
+QTMPRIS_VERSION = 5d31ba54f08f46ae466a638a66ffc68b37d353f4
 #QTMPRIS_SITE = $(call github,nemomobile,qtmpris,$(QTMPRIS_VERSION))
 QTMPRIS_SITE = https://git.merproject.org/mer-core/qtmpris
 #QTMPRIS_SITE = $(call git.merproject.org,mer-core,qtmpris,$(QTMPRIS_VERSION))

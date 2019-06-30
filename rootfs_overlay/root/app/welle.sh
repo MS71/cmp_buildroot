@@ -12,9 +12,9 @@ export QT_QPA_GENERIC_PLUGINS=tslib:/dev/input/event0
 export QT_QPA_FB_TSLIB=1
 export TSLIB_FBDEVICE=/dev/fb0
 export TSLIB_TSDEVICE=/dev/input/event0 
-cd /tmp/app
+cd /tmp/mmcvfat
 echo 1 > /sys/class/backlight/fb_ili9341/bl_power
-export TSLIB_CALIBFILE=/tmp/app/tslib.calib
+export TSLIB_CALIBFILE=/tmp/mmcvfat/tslib.calib
 if [ -f $TSLIB_CALIBFILE ]; then
  echo ""
 else
