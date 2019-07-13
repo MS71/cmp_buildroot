@@ -1,10 +1,7 @@
 #!/bin/sh
 echo "statring welle-io ..."
-cd /root/app
-pwd
-ps -ef
+cd /root
 
-cd /root/app
 export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins/platforms
 export QT_QPA_PLATFORM=linuxfb:fb=/dev/fb0:size=240x320
 #export QT_QPA_FB_HIDECURSOR=1
@@ -14,14 +11,7 @@ export TSLIB_FBDEVICE=/dev/fb0
 export TSLIB_TSDEVICE=/dev/input/event0 
 cd /tmp/mmcvfat
 echo 1 > /sys/class/backlight/fb_ili9341/bl_power
-export TSLIB_CALIBFILE=/tmp/mmcvfat/tslib.calib
-if [ -f $TSLIB_CALIBFILE ]; then
- echo ""
-else
- ts_calibrate
- sync
- ts_test
-fi
+export TSLIB_CALIBFILE=/data/tslib.calib
 
 echo "export DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS" > /tmp/DBUS_SESSION_BUS_ADDRESS.sh
 chmod +x /tmp/DBUS_SESSION_BUS_ADDRESS.sh

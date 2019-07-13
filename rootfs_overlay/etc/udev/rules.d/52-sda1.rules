@@ -1,0 +1,1 @@
+ACTION=="add", KERNEL=="sda", SUBSYSTEM=="block", RUN="/root/start_sda1.sh &"

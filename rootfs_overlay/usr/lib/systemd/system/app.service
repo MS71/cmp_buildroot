@@ -1,15 +1,15 @@
 [Unit]
 Description=App service
-ConditionPathIsDirectory=/root/app
-Requires=network.target dbus.service
+ConditionPathIsDirectory=/root
+Requires=dbus.service
 
 [Service]
 Type=oneshot
 #BusName=org.bluez
-ExecStart=/root/app/start.sh
+ExecStart=/root/start.sh
 SendSIGKILL=Yes
 RemainAfterExit=Yes
-#ExecStop=/root/app/stop.sh
+#ExecStop=/root/stop.sh
 TimeoutStopSec=5
 KillMode=1
 #NotifyAccess=main
