@@ -234,15 +234,9 @@
 };
 
 &i2c0 {
-	__overlay__ {
-			status = "okay";
-	};
-};
-
-&i2c1 {
-	__overlay__ {
-			status = "okay";
-	};
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pins>;
+	status = "okay";
 };
 
 /*

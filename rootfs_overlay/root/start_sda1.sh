@@ -25,6 +25,14 @@ fi
 
 #exit 0
 
+if [ ! -d /var/lib/bluetooth ]; then
+  if [ -f /mnt/app_backup/var_lib_bluetooth.zip ]; then
+    cd /
+    unzip /mnt/app_backup/var_lib_bluetooth.zip
+    cd -
+  fi
+fi
+
 # Restore bt.addr file if possible
 if [ ! -f /data/bt.addr ]; then
   if [ -f /mnt/app_backup/bt.addr ]; then
@@ -50,6 +58,7 @@ cd /data
 #
 mkdir -p /mnt/app_backup
 zip -r /mnt/app_backup/$BOOTCNT-app.zip app bt.addr tslib.calib log
+zip -r /mnt/app_backup/var_lib_bluetooth.zip /var/lib/bluetooth
 rm -rf /data/log/*
 cp bt.addr     /mnt/app_backup/.
 cp tslib.calib /mnt/app_backup/.

@@ -101,6 +101,11 @@ if [ ! -f $TSLIB_CALIBFILE ]; then
 fi
 psplash-write "PROGRESS 60"
 
+psplash-write "MSG enable bias tee ..."
+rtl_biast -d 0 -b 1
+rtl_biast -d 1 -b 1
+psplash-write "PROGRESS 70"
+
 # starting application ...
 if [ -f /data/app/start.sh ]; then
  psplash-write "PROGRESS 90"

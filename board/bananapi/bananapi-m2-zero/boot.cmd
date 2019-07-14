@@ -1,5 +1,7 @@
 
-setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p2 rootwait consoleblank=0 ro quiet bootdelay=0
+setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p2 rootwait consoleblank=0 ro quiet 
+setenv bootdelay 0
+saveenv
 
 mmc dev 0
 fatload mmc 0 $kernel_addr_r zImage
