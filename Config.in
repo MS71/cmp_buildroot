@@ -7,4 +7,6 @@ menu "CMP packages"
 	source "$BR2_EXTERNAL_CMP_PATH/package/pulseaudio_modules_bt/Config.in"
 	source "$BR2_EXTERNAL_CMP_PATH/package/ldacbt/Config.in"
 	source "$BR2_EXTERNAL_CMP_PATH/package/ffmpeg4/Config.in"
+	source "$BR2_EXTERNAL_CMP_PATH/package/python-pybluez/Config.in"
+	source "$BR2_EXTERNAL_CMP_PATH/package/python-bluetool/Config.in"
 endmenu

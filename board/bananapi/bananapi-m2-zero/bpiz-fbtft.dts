@@ -13,64 +13,38 @@
 	model = "Banana Pi BPI-M2-Zero";
 	compatible = "sinovoip,bpi-m2-zero", "allwinner,sun8i-h2-plus";
 
-	aliases {
-		serial0 = &uart0;
-		serial1 = &uart1;
-	};
-
-	chosen {
-		stdout-path = "serial0:115200n8";
-	};
-
-	leds {
-		compatible = "gpio-leds";
+	gpio_keys {
+		compatible = "gpio-keys";
 		pinctrl-names = "default";
 
-		pwr_led {
-			label = "bananapi-m2-zero:red:pwr";
-			gpios = <&r_pio 0 10 GPIO_ACTIVE_HIGH>; /* PL10 */
-			default-state = "on";
+      		pinctrl-0 = <&gpio_button_0>;      
+		//address-cells = <1>;
+      		//size-cells = <0>;
+      		//autorepeat;
+
+		sw4 {
+			label = "power";
+			linux,code = <BTN_0>;
+			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
 		};
-	};
 
-			gpio_keys {
-				compatible = "gpio-keys";
-				pinctrl-names = "default";
+		btn1 {
+			label = "B1";
+			linux,code = <BTN_1>;
+			gpios = <&pio 0 1 GPIO_ACTIVE_LOW>;
+		};
 
-		      		pinctrl-0 = <&gpio_button_0>;      
-				//address-cells = <1>;
-		      		//size-cells = <0>;
-		      		//autorepeat;
+		btn2 {
+			label = "B2";
+			linux,code = <BTN_2>;
+			gpios = <&pio 0 0 GPIO_ACTIVE_LOW>;
+		};
 
-				sw4 {
-					label = "power";
-					linux,code = <BTN_0>;
-					gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
-				};
-
-				btn1 {
-					label = "B1";
-					linux,code = <BTN_1>;
-					gpios = <&pio 0 1 GPIO_ACTIVE_LOW>;
-				};
-
-				btn2 {
-					label = "B2";
-					linux,code = <BTN_2>;
-					gpios = <&pio 0 0 GPIO_ACTIVE_LOW>;
-				};
-
-				btn3 {
-					label = "B3";
-					linux,code = <BTN_3>;
-					gpios = <&pio 0 3 GPIO_ACTIVE_LOW>;
-				};
-			};
-
-	wifi_pwrseq: wifi_pwrseq {
-		compatible = "mmc-pwrseq-simple";
-		pinctrl-names = "default";
-		reset-gpios = <&r_pio 0 7 GPIO_ACTIVE_LOW>; /* PL7 */
+		btn3 {
+			label = "B3";
+			linux,code = <BTN_3>;
+			gpios = <&pio 0 3 GPIO_ACTIVE_LOW>;
+		};
 	};
 };
 
@@ -183,54 +157,6 @@
 		ti,settle_delay_usecs = /bits/ 16 <100>;
 		ti,penirq-recheck-delay-usecs = /bits/ 16 <100>;
 	};
-};
-
-&mmc0 {
-	vmmc-supply = <&reg_vcc3v3>;
-	bus-width = <4>;
-	/*
-	 * On the production batch of this board the card detect GPIO is
-	 * high active (card inserted), although on the early samples it's
-	 * low active.
-	 */
-	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>; /* PF6 */
-	status = "okay";
-};
-
-&mmc1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc1_pins>;
-	vmmc-supply = <&reg_vcc3v3>;
-	vqmmc-supply = <&reg_vcc3v3>;
-	mmc-pwrseq = <&wifi_pwrseq>;
-	bus-width = <4>;
-	non-removable;
-	status = "okay";
-
-	brcmf: wifi@1 {
-		reg = <1>;
-		compatible = "brcm,bcm4329-fmac";
-		interrupt-parent = <&pio>;
-		interrupts = <6 10 IRQ_TYPE_LEVEL_LOW>; /* PG10 / EINT10 */
-		interrupt-names = "host-wake";
-	};
-};
-
-&uart0 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&uart0_pins_a>;
-	status = "okay";
-};
-
-&usbphy {
-	usb0_id_det-gpios = <&r_pio 0 6 GPIO_ACTIVE_HIGH>; /* PL6 */
-	/*
-	 * There're two micro-USB connectors, one is power-only and another is
-	 * OTG. The Vbus of these two connectors are connected together, so
-	 * the external USB device will be powered just by the power input
-	 * from the power-only USB port.
-	 */
-	status = "okay";
 };
 
 &i2c0 {

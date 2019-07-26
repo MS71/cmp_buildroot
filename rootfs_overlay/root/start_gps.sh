@@ -9,7 +9,7 @@ if [ -f /data/boot.cnt ]; then
   mkdir -p /data/log
   #sleep 10
   while true; do
-   gpxlogger -e sockets -r -m 1 -f /data/log/$BOOTCNT.gpx
+   gpxlogger -e sockets -r -m 1 -f /data/log/${BOOTCNT}_`date +"%Y%m%d_%H%M%S"`.gpx
    sleep 1
   done
  #fi
