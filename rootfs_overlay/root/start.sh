@@ -68,6 +68,13 @@ else
  BOOTCNT=$N
 fi
 
+# move brcm firmware
+if [ -d "/root/brcm" ]; then
+ mv /root/brcm /lib/firmware
+ sync
+ reboot
+fi
+
 # create log directory
 mkdir -p /data/log
 
@@ -108,6 +115,9 @@ psplash-write "MSG enable bias tee ..."
 rtl_biast -d 0 -b 1
 rtl_biast -d 1 -b 1
 psplash-write "PROGRESS 70"
+
+# start WIFI 
+ifup wlan0
 
 # starting application ...
 if [ -f /data/app/start.sh ]; then
