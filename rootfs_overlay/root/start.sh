@@ -4,6 +4,7 @@ echo userspace > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
 echo "ds3231 0x68" > /sys/class/i2c-adapter/i2c-0/new_device
 #hwclock -f /dev/rtc1 -s
+hwclock -s
 
 # enable BL
 echo 1 > /sys/class/backlight/fb_ili9341/bl_power
