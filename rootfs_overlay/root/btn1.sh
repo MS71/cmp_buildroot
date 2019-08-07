@@ -1,6 +1,8 @@
 #!/bin/sh
-rm -rf /tmp/mmcvfat/tslib.calib
-rm -rf /tmp/mmcvfat/app.md5
-rm -rf /tmp/mmcvfat/app
-sync
-reboot
+BOOTCNTFN=/data/boot.cnt
+if [ -f $BOOTCNTFN ]; then
+ BOOTCNT=`cut -d ',' -f2 $BOOTCNTFN`
+ mkdir -p /data/log
+ hcidump -w /data/log/$BOOTCNTFN_hci.cap
+fi
+

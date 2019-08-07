@@ -75,6 +75,22 @@ if [ -d "/root/brcm" ]; then
  reboot
 fi
 
+# if requested, install app.zip 
+if [ -e /root/app.zip ]; then
+  NEWMD5SUM=($(md5sum /root/app.zip))
+  OLDMD5SUM=
+  if [ -f /data/app.md5 ]; then
+    OLDMD5SUM=$(cat /data/app.md5)
+  fi
+  cd /data
+  if [ "0x$OLDMD5SUM" != "0x$NEWMD5SUM" ] ; then
+    unzip -oq /root/app.zip
+    echo $NEWMD5SUM > /data/app.md5
+    sync
+  fi
+  rm -f /root/app.zip
+fi
+
 # create log directory
 mkdir -p /data/log
 
@@ -117,7 +133,7 @@ rtl_biast -d 1 -b 1
 psplash-write "PROGRESS 70"
 
 # start WIFI 
-ifup wlan0
+#ifup wlan0 &
 
 # starting application ...
 if [ -f /data/app/start.sh ]; then
