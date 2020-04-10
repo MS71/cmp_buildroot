@@ -88,6 +88,24 @@
 			bias-pull-up;
 		};
 
+		csi_pwr_en: csi_pwr_en {
+			pins = "PD14";
+			function = "gpio_out";
+			output-high;
+		};
+
+		csi_pwr_dn: csi_pwr_dn {
+			pins = "PE15";
+			function = "gpio_out";
+			output-high;
+		};
+
+		csi_rst: csi_rst {
+			pins = "PE14";
+			function = "gpio_out";
+			output-high;
+		};
+
 	};
 };
 
@@ -122,7 +140,7 @@
 		buswidth = <8>;
 		backlight = <0>;
 		readwrite = <1>;
-		reset-gpios = <&pio 0 15 0>;	/* PA15, pio out */
+		reset-gpios = <&pio 0 15 1>;	/* PA15, pio out */
 		dc-gpios = <&pio 2 4 0>;	/* PC4, pio out */
 		led-gpios = <&pio 0 16 0>;	/* PA16, pio out */
 		debug = <0>;
@@ -162,6 +180,21 @@
 &i2c0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c0_pins>;
+	status = "okay";
+};
+
+&i2c2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c2_pins>;
+	status = "okay";
+};
+
+&csi {
+	pinctrl-names = "default";
+	pinctrl-0 = <&csi_pins>;
+	poweren-gpios = <&pio 3 14 GPIO_ACTIVE_HIGH>; /* CSI-PWR-EN: PD14 */
+	reset-gpios = <&pio 4 14 GPIO_ACTIVE_LOW>; /* CSI-RST-R: PE14 */
+	powerdown-gpios = <&pio 4 15 GPIO_ACTIVE_HIGH>; /* CSI-STBY-R: PE15 */
 	status = "okay";
 };
 
