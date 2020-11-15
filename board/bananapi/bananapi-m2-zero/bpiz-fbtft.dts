@@ -156,7 +156,7 @@
 		spi-max-frequency = <2000000>;
 		interrupt-parent = <&pio>;
 		interrupts = <0 2 2>; /* PA2 IRQ_TYPE_EDGE_FALLING */
-		pendown-gpio = <&pio 0 2 0>; /* PA2 */
+		pendown-gpio = <&pio 0 2 GPIO_ACTIVE_HIGH>; /* PA2 */
 
 		/* driver defaults, optional */
 		ti,x-min = /bits/ 16 <200>;
@@ -174,6 +174,8 @@
 		ti,keep_vref_on =  <1>;
 		ti,settle_delay_usecs = /bits/ 16 <100>;
 		ti,penirq-recheck-delay-usecs = /bits/ 16 <100>;
+
+		wakeup-source;
 	};
 };
 
@@ -190,12 +192,12 @@
 };
 
 &csi {
-	pinctrl-names = "default";
-	pinctrl-0 = <&csi_pins>;
-	poweren-gpios = <&pio 3 14 GPIO_ACTIVE_HIGH>; /* CSI-PWR-EN: PD14 */
-	reset-gpios = <&pio 4 14 GPIO_ACTIVE_LOW>; /* CSI-RST-R: PE14 */
-	powerdown-gpios = <&pio 4 15 GPIO_ACTIVE_HIGH>; /* CSI-STBY-R: PE15 */
-	status = "okay";
+       pinctrl-names = "default";
+       pinctrl-0 = <&csi_pins>;
+       poweren-gpios = <&pio 3 14 GPIO_ACTIVE_HIGH>; /* CSI-PWR-EN: PD14 */
+       reset-gpios = <&pio 4 14 GPIO_ACTIVE_LOW>; /* CSI-RST-R: PE14 */
+       powerdown-gpios = <&pio 4 15 GPIO_ACTIVE_HIGH>; /* CSI-STBY-R: PE15 */
+       status = "okay";
 };
 
 /*

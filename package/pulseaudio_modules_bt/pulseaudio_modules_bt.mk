@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PULSEAUDIO_MODULES_BT_VERSION = v1.3
+PULSEAUDIO_MODULES_BT_VERSION = v1.4
 PULSEAUDIO_MODULES_BT_SITE = $(call github,EHfive,pulseaudio-modules-bt,$(PULSEAUDIO_MODULES_BT_VERSION))
 PULSEAUDIO_MODULES_BT_LICENSE = GPL-2.0+
 PULSEAUDIO_MODULES_BT_LICENSE_FILES = COPYING
